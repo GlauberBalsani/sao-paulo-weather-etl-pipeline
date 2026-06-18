@@ -77,6 +77,26 @@ http://localhost:8080
   - `extract`: chama `extract_weather_data(url)` e salva o JSON em `data/weather_data.json`
   - `transform`: chama `data_transformations()` e salva o parquet em `/opt/airflow/data/temp_data.parquet`
   - `load`: lê o parquet e insere os dados em `sp_weather`
+  - `load`: lê o parquet e insere os dados em `sp_weather`
+
+## Diagrama do Pipeline
+
+Diagrama simplificado do fluxo ETL (Mermaid):
+
+```mermaid
+flowchart LR
+  Dag[DAG: weather_pipeline] --> Extract[Extract]
+  Extract --> Transform[Transform]
+  Transform --> Load[Load]
+  Load --> Postgres[(postgres-weather)]
+
+  Env[config/.env] -.-> Dag
+  API[OpenWeatherMap API] --> Extract
+  Extract --> JSON[weather_data.json]
+  JSON --> Transform
+  Transform --> Parquet[temp_data.parquet]
+  Parquet --> Load
+```
 
 ## Dados e Tabela de Destino
 
