@@ -84,32 +84,18 @@ http://localhost:8080
 
   ```mermaid
   flowchart LR
-    subgraph DockerCompose[Docker Compose]
-      direction TB
-      subgraph Airflow[Airflow (webserver, scheduler, workers)]
-        A[Extract\n(OpenWeatherMap)] --> B[Transform\n(pandas)]
-        B --> C[Load\n(Postgres)]
-      end
-      Airflow ---|orquestra| D[Dag: weather_pipeline]
-    end
+    Extract[Extract - OpenWeatherMap] --> Transform[Transform - pandas]
+    Transform --> Load[Load - Postgres]
+    Dag[Dag: weather_pipeline]
+    Dag --> Extract
 
-    E[config/.env (local, secrets)] -.-> D
-    F[data/weather_data.json] --> B
-    G[/postgres-weather:5432/] <-- C
-
-    classDef ext fill:#ffd7a6,stroke:#8b5e3c
-    classDef tfm fill:#cce5ff,stroke:#1f6feb
-    classDef load fill:#d4f5d4,stroke:#2b8a2b
-
-    class A ext
-    class B tfm
-    class C load
+    Env[config/.env (local, secrets)] -.-> Dag
+    Data[data/weather_data.json] --> Transform
+    Postgres[/postgres-weather:5432/] <-- Load
 
     %% Notes
-    subgraph Notes[Notas]
-      N1[Executa via `docker compose up -d`]
-      N2[Agende: a cada hora — cron: 0 */1 * * *]
-    end
+    Note1[Executa via docker compose up -d]
+    Note2[Agende: a cada hora - cron: 0 */1 * * *]
   ```
 
 
