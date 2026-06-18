@@ -14,8 +14,9 @@ load_dotenv(env_path)
 user = os.getenv('user')
 password = os.getenv('password')
 database = os.getenv('database')
-host = os.getenv('host', 'localhost')
+#host = os.getenv('host', 'localhost')
 port = os.getenv('port', '5432')
+host = os.getenv('docker_host') if os.path.exists('/.dockerenv') else os.getenv('host')
 
 def get_engine():
     logging.info(f"→ Conectando em {host}:{port}/{database}")
