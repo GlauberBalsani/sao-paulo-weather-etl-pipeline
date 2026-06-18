@@ -78,27 +78,6 @@ http://localhost:8080
   - `transform`: chama `data_transformations()` e salva o parquet em `/opt/airflow/data/temp_data.parquet`
   - `load`: lê o parquet e insere os dados em `sp_weather`
 
-  ## Diagrama do Pipeline
-
-  Abaixo está um diagrama do fluxo ETL do projeto (Mermaid). Abra este arquivo no GitHub ou em um visualizador Mermaid para uma renderização gráfica.
-
-  ```mermaid
-  flowchart LR
-    Extract[Extract - OpenWeatherMap] --> Transform[Transform - pandas]
-    Transform --> Load[Load - Postgres]
-    Dag[Dag: weather_pipeline]
-    Dag --> Extract
-
-    Env[config/.env (local, secrets)] -.-> Dag
-    Data[data/weather_data.json] --> Transform
-    Postgres[/postgres-weather:5432/] <-- Load
-
-    %% Notes
-    Note1[Executa via docker compose up -d]
-    Note2[Agende: a cada hora - cron: 0 */1 * * *]
-  ```
-
-
 ## Dados e Tabela de Destino
 
 - Arquivo temporário criado pelo DAG: `/opt/airflow/data/temp_data.parquet`
