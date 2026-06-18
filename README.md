@@ -83,21 +83,6 @@ http://localhost:8080
 
 Diagrama simplificado do fluxo ETL (Mermaid):
 
-```mermaid
-flowchart LR
-  Dag[DAG: weather_pipeline] --> Extract[Extract]
-  Extract --> Transform[Transform]
-  Transform --> Load[Load]
-  Load --> Postgres[(postgres-weather)]
-
-  Env[config/.env] -.-> Dag
-  API[OpenWeatherMap API] --> Extract
-  Extract --> JSON[weather_data.json]
-  JSON --> Transform
-  Transform --> Parquet[temp_data.parquet]
-  Parquet --> Load
-```
-
 ## Dados e Tabela de Destino
 
 - Arquivo temporário criado pelo DAG: `/opt/airflow/data/temp_data.parquet`
